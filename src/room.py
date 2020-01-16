@@ -17,11 +17,13 @@ class Room:
         if hasattr(self, f"{direction}_to"):
             return getattr(self, f"{direction}_to")
 
-    def get_items(self):
+    def get_room_items(self):
         if len(self.items) > 0:
             for item in self.items:
                 print(f"{item}")
         else:
             print("nothing in the room")
 
+    def add_dropped_item(self, item):
+        self.items.append(item)
     

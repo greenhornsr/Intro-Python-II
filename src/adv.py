@@ -1,10 +1,11 @@
 from room import Room
 from player import Player
+from item import Item
 
 # Declare all the rooms
 
 room = {
-    'outside':  Room("Outside Cave Entrance","North of you, the cave mount beckons"),
+    'outside':  Room("Outside Cave Entrance","North of you, the cave mount beckons", [Item("Lantern", "An old, rusty source of low light."),]),
 
     'foyer':    Room("Foyer", """Dim light filters in from the south. Dusty
 passages run north and east."""),
@@ -37,6 +38,7 @@ room['treasure'].s_to = room['narrow']
 # Main
 #
 directions = ["n", "s", "e", "w"]
+actions = ["get", "drop", "i", "h"] 
 # Make a new player object that is currently in the 'outside' room.
 player1 = Player(input("Please enter your name: "),room['outside'])
 # * Prints the current room name
@@ -46,22 +48,52 @@ print(player1.curr_room.description)
 
 # Write a loop that:
 #
+
+# Helper Function
+def player_options():
+    print(
+    """
+    =====================OPTIONS========================
+    q: Quit Game.
+    h: Display Options.
+    n/s/e/w: Change Rooms.
+    i: Display Inventory.
+    get <item>: Put an item from the room in your inventory.
+    drop <item>: Drop an item from your inventory in the room.
+    ====================================================
+    """
+    )
+
 while True:
 # Check what items are in the room.
-    player1.curr_room.get_items()
+    player1.curr_room.get_room_items()
 # * Waits for user input and decides what to do.
-    userdir = input("Please input a direction to go: ").lower()
+    # what_to_do()
+    # test = player_action_prompt()
+    # print(test)
+    cmd = input("What would you like to do?").lower().split(" ")
+    
+    if len(cmd) == 1:
+        if cmd[0] in directions:
+        # print("location-to", room[player1.curr_room].n_to.name)
+            player1.move(cmd)
+# If the user enters "q", quit the game.
+        elif cmd[0] == "q":
+            # Quit game.
+            print("Thanks for playing!")
+            break
+    elif len(cmd) == 2:
+        if cmd[0] in actions:
+            if cmd[0] == "get":
+                #choose item from available items in room
+                pass
+            else:
+                #choose an item to drop
+                pass
+        else:
+            print("Not a valid option.  must be 'get' or 'drop' followed by the item.")
+# Print an error message if the movement isn't allowed.
+    else:
+        print("Must enter a valid command.")
 #
 # If the user enters a cardinal direction, attempt to move to the room there.
-    if userdir in directions:
-        # print("location-to", room[player1.curr_room].n_to.name)
-        player1.move(userdir)
-# Print an error message if the movement isn't allowed.
-    elif userdir == "q":
-        # Quit game.
-        print("Thanks for playing!")
-        break
-#
-# If the user enters "q", quit the game.
-    else:
-        print("Must enter one of 'n', 's', 'e', 'w'.")
