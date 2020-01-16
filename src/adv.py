@@ -38,22 +38,28 @@ room['treasure'].s_to = room['narrow']
 #
 directions = ["n", "s", "e", "w"]
 # Make a new player object that is currently in the 'outside' room.
-player1 = Player("Mario")
+player1 = Player(input("Please enter your name: "),room['outside'])
+# * Prints the current room name
+print(player1.curr_room.name)
+# * Prints the current description (the textwrap module might be useful here).
+print(player1.curr_room.description)
+
 # Write a loop that:
 #
 while True:
-# * Prints the current room name
-    print(room[player1.curr_room].name)
-# * Prints the current description (the textwrap module might be useful here).
-    print(room[player1.curr_room].description)
+# Check what items are in the room.
+    player1.curr_room.get_items()
 # * Waits for user input and decides what to do.
-    userresponse = input("Please input a direction to go: ")
+    userdir = input("Please input a direction to go: ").lower()
 #
 # If the user enters a cardinal direction, attempt to move to the room there.
-    if userresponse in directions:
-        print("test")
+    if userdir in directions:
+        # print("location-to", room[player1.curr_room].n_to.name)
+        player1.move(userdir)
 # Print an error message if the movement isn't allowed.
-    elif userresponse == "q":
+    elif userdir == "q":
+        # Quit game.
+        print("Thanks for playing!")
         break
 #
 # If the user enters "q", quit the game.
