@@ -1,10 +1,10 @@
 from room import Room
+from player import Player
 
 # Declare all the rooms
 
 room = {
-    'outside':  Room("Outside Cave Entrance",
-                     "North of you, the cave mount beckons"),
+    'outside':  Room("Outside Cave Entrance","North of you, the cave mount beckons"),
 
     'foyer':    Room("Foyer", """Dim light filters in from the south. Dusty
 passages run north and east."""),
@@ -36,16 +36,26 @@ room['treasure'].s_to = room['narrow']
 #
 # Main
 #
-
+directions = ["n", "s", "e", "w"]
 # Make a new player object that is currently in the 'outside' room.
-
+player1 = Player("Mario")
 # Write a loop that:
 #
+while True:
 # * Prints the current room name
+    print(room[player1.curr_room].name)
 # * Prints the current description (the textwrap module might be useful here).
+    print(room[player1.curr_room].description)
 # * Waits for user input and decides what to do.
+    userresponse = input("Please input a direction to go: ")
 #
 # If the user enters a cardinal direction, attempt to move to the room there.
+    if userresponse in directions:
+        print("test")
 # Print an error message if the movement isn't allowed.
+    elif userresponse == "q":
+        break
 #
 # If the user enters "q", quit the game.
+    else:
+        print("Must enter one of 'n', 's', 'e', 'w'.")
