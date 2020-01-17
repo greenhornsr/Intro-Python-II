@@ -5,7 +5,7 @@ from item import Item
 # Declare all the rooms
 
 room = {
-    'outside':  Room("Outside Cave Entrance","North of you, the cave mount beckons", [Item("Lantern", "An old, rusty source of low light."),]),
+    'outside':  Room("Outside Cave Entrance","North of you, the cave mount beckons", [Item("Lantern", "An old, rusty source of low light."),Item("Shovel", "A solid way to dig.")]),
 
     'foyer':    Room("Foyer", """Dim light filters in from the south. Dusty
 passages run north and east."""),
@@ -40,11 +40,11 @@ room['treasure'].s_to = room['narrow']
 directions = ["n", "s", "e", "w"]
 actions = ["get", "drop", "i", "h"] 
 # Make a new player object that is currently in the 'outside' room.
-player1 = Player(input("Please enter your name: "),room['outside'])
+player = Player(input("Please enter your name: "),room['outside'])
 # * Prints the current room name
-print(player1.curr_room.name)
+print(player.curr_room.name)
 # * Prints the current description (the textwrap module might be useful here).
-print(player1.curr_room.description)
+print(player.curr_room.description)
 
 # Write a loop that:
 #
@@ -53,30 +53,34 @@ print(player1.curr_room.description)
 def player_options():
     print(
     """
-    =====================OPTIONS========================
+    =========================OPTIONS============================
     q: Quit Game.
     h: Display Options.
     n/s/e/w: Change Rooms.
     i: Display Inventory.
     get <item>: Put an item from the room in your inventory.
     drop <item>: Drop an item from your inventory in the room.
-    ====================================================
+    ============================================================
+    \n\n
     """
     )
 
 while True:
-# Check what items are in the room.
-    player1.curr_room.get_room_items()
+    print(player.curr_room)
+    # display items in the room to user.
+    player.curr_room.get_room_items()
 # * Waits for user input and decides what to do.
-    # what_to_do()
-    # test = player_action_prompt()
-    # print(test)
     cmd = input("What would you like to do?").lower().split(" ")
     
     if len(cmd) == 1:
         if cmd[0] in directions:
         # print("location-to", room[player1.curr_room].n_to.name)
-            player1.move(cmd)
+            player.move(cmd[0])
+        # get player inventory
+        elif cmd[0] == "i":
+            player.view_inventory()
+        elif cmd[0] == "h":
+            player_options()
 # If the user enters "q", quit the game.
         elif cmd[0] == "q":
             # Quit game.
@@ -86,7 +90,9 @@ while True:
         if cmd[0] in actions:
             if cmd[0] == "get":
                 #choose item from available items in room
-                pass
+                for item in player.curr_room.items:
+                    if cmd[1] == item:
+                        player.curr_room.add_item(cmd[1])
             else:
                 #choose an item to drop
                 pass

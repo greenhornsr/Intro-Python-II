@@ -11,11 +11,19 @@ class Room:
         self.items = items
 
     def __str__(self):
-        return f"{self.name}\n{self.description}"
+        display_string = ""
+        display_string += f"--------------"
+        display_string += f"\n{self.name}\n" 
+        display_string += f"\n{self.description}\n" 
+        display_string += f"\n{self.get_exits_string()}\n" 
+        # display_string = f"{self.name}\n{self.description}"
+        return display_string
+
 
     def get_room_direction(self, direction):
         if hasattr(self, f"{direction}_to"):
             return getattr(self, f"{direction}_to")
+        return None
 
     def get_room_items(self):
         if len(self.items) > 0:
@@ -27,3 +35,17 @@ class Room:
     def add_dropped_item(self, item):
         self.items.append(item)
     
+    def get_exits(self):
+        exits = []
+        if self.n_to:
+            exits.append("n")
+        if self.s_to:
+            exits.append("s")
+        if self.e_to:
+            exits.append("e")
+        if self.w_to:
+            exits.append("w")
+        return exits
+
+    def get_exits_string(self):
+        return f"Moves: {', '.join(self.get_exits())}"
