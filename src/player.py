@@ -31,17 +31,16 @@ class Player:
             if roomitem.name == item:
                 self.curr_room.items.remove(roomitem)
                 self.inventory.append(roomitem)
-                print(f"{self.name} has found {roomitem.name}!")
-        for playeritem in self.inventory:
-            print(f"Items left in player inventory: {playeritem}")
+                roomitem.on_take()
+
 
     def drop_item(self, dropitem):
-        if dropitem in self.inventory:
-            dropped_item = self.inventory.remove(dropitem)
-            print(f"{self.name} dropped the {dropped_item}.")
-            self.curr_room.add_dropped_item(dropped_item)
-        else: 
-            print(f"{dropitem} not in {self.name}'s inventory.")
+        for playeritem in self.inventory:
+            if playeritem.name == dropitem:
+                self.curr_room.items.append(playeritem)
+                self.inventory.remove(playeritem)
+                playeritem.on_drop()
+
 
 
 

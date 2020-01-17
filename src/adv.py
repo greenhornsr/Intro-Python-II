@@ -38,7 +38,7 @@ room['treasure'].s_to = room['narrow']
 # Main
 #
 directions = ["n", "s", "e", "w"]
-actions = ["get", "drop", "i", "h"] 
+actions = ["get", "take", "drop", "i", "inventory" "h"] 
 # Make a new player object that is currently in the 'outside' room.
 player = Player(input("Please enter your name: "),room['outside'])
 # * Prints the current room name
@@ -57,7 +57,7 @@ def player_options():
     q: Quit Game.
     h: Display Options.
     n/s/e/w: Change Rooms.
-    i: Display Inventory.
+    i/inventory: Display Player Inventory.
     get <item>: Put an item from the room in your inventory.
     drop <item>: Drop an item from your inventory in the room.
     ============================================================
@@ -77,7 +77,7 @@ while True:
         # print("location-to", room[player1.curr_room].n_to.name)
             player.move(cmd[0])
         # get player inventory
-        elif cmd[0] == "i":
+        elif cmd[0] == "i" or cmd[0] == "inventory":
             player.view_inventory()
         elif cmd[0] == "h":
             player_options()
@@ -88,15 +88,22 @@ while True:
             break
     elif len(cmd) == 2:
         if cmd[0] in actions:
-            if cmd[0] == "get":
+            if cmd[0] == "get" or cmd[0] == "take":
+                roomitem =  [item.name for item in player.curr_room.items if item.name == cmd[1]]
                 #choose item from available items in room
-                for item in player.curr_room.items:
-                    if cmd[1] == item.name:
-                        print("item from player: ", cmd)
-                        player.add_item(cmd[1])
-            else:
-                #choose an item to drop
-                pass
+                if len(roomitem) == 1:
+                    # add item to player inventory
+                    player.add_item(cmd[1])
+                else:
+                    print(f"{cmd[1]} isn't in the {player.curr_room.name}.")
+            elif cmd[0] == "drop":
+                #choose an item to drop in room
+                playeritem = [item.name for item in player.inventory if item.name == cmd[1]]
+                if len(playeritem):
+                    # remove item from player inventory
+                    player.drop_item(cmd[1])
+                else: 
+                    print(f"{cmd[1]} isn't in the {player.name}'s inventory.")
         else:
             print("Not a valid option.  must be 'get' or 'drop' followed by the item.")
 # Print an error message if the movement isn't allowed.
