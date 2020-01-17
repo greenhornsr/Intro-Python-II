@@ -27,10 +27,13 @@ class Player:
             print("You have nothing in your inventory.")
 
     def add_item(self, item):
-        newitem = self.curr_room.items.remove(item)
-        self.inventory.append(newitem)
-        print(f"{self.name} has found {newitem}!")
-        print(f"Items left in player inventory: {self.inventory}")
+        for roomitem in self.curr_room.items:
+            if roomitem.name == item:
+                self.curr_room.items.remove(roomitem)
+                self.inventory.append(roomitem)
+                print(f"{self.name} has found {roomitem.name}!")
+        for playeritem in self.inventory:
+            print(f"Items left in player inventory: {playeritem}")
 
     def drop_item(self, dropitem):
         if dropitem in self.inventory:

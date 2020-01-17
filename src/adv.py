@@ -5,7 +5,7 @@ from item import Item
 # Declare all the rooms
 
 room = {
-    'outside':  Room("Outside Cave Entrance","North of you, the cave mount beckons", [Item("Lantern", "An old, rusty source of low light."),Item("Shovel", "A solid way to dig.")]),
+    'outside':  Room("Outside Cave Entrance","North of you, the cave mount beckons", [Item("lantern", "An old, rusty source of low light."),Item("shovel", "A solid way to dig.")]),
 
     'foyer':    Room("Foyer", """Dim light filters in from the south. Dusty
 passages run north and east."""),
@@ -70,7 +70,7 @@ while True:
     # display items in the room to user.
     player.curr_room.get_room_items()
 # * Waits for user input and decides what to do.
-    cmd = input("What would you like to do?").lower().split(" ")
+    cmd = input("\nWhat would you like to do?").lower().split(" ")
     
     if len(cmd) == 1:
         if cmd[0] in directions:
@@ -91,8 +91,9 @@ while True:
             if cmd[0] == "get":
                 #choose item from available items in room
                 for item in player.curr_room.items:
-                    if cmd[1] == item:
-                        player.curr_room.add_item(cmd[1])
+                    if cmd[1] == item.name:
+                        print("item from player: ", cmd)
+                        player.add_item(cmd[1])
             else:
                 #choose an item to drop
                 pass

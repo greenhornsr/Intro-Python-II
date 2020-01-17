@@ -13,7 +13,7 @@ class Room:
     def __str__(self):
         display_string = ""
         display_string += f"--------------"
-        display_string += f"\n{self.name}\n" 
+        display_string += f"\n{self.name}" 
         display_string += f"\n{self.description}\n" 
         display_string += f"\n{self.get_exits_string()}\n" 
         # display_string = f"{self.name}\n{self.description}"
@@ -27,8 +27,9 @@ class Room:
 
     def get_room_items(self):
         if len(self.items) > 0:
+            print(f"Items in {self.name}: ")
             for item in self.items:
-                print(f"{item}")
+                print(f"\t{item}")
         else:
             print("nothing in the room")
 
